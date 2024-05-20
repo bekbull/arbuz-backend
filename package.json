@@ -1,0 +1,34 @@
+{
+  "name": "arbuz-backend",
+  "version": "1.0.0",
+  "description": "This is small to store data and process requests from my take-home iOS app.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bekbull/arbuz-backend.git"
+  },
+  "keywords": [
+    "express",
+    "node",
+    "ios",
+    "arbuz"
+  ],
+  "author": "Bekbol Bolatov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bekbull/arbuz-backend/issues"
+  },
+  "homepage": "https://github.com/bekbull/arbuz-backend#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.19.2",
+    "mongoose": "^8.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
