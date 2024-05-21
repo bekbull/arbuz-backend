@@ -1,0 +1,12 @@
+{
+    "product": {
+        "imageUrl": "https://8e2c-81-88-146-247.ngrok-free.app/uploads/apple_test.jpg",
+        "title": "Зеленое сочное яблоко",
+        "price": 9.99,
+        "unit": "1 шт",
+        "discount": 0,
+        "category_id": "664c4591f2e56ae70ef22dcf",
+        "count": 10,
+        "description": "Просто топовое яблоко. Ешь и радуйся жизни."
+    }
+}

@@ -55,7 +55,7 @@ router.post('/add', async (req, res) => {
     }
 });
 
-// Increase item count in the basket
+// Add or increase item in the basket
 router.post('/increase', async (req, res) => {
     const { product_id } = req.body;
     try {
@@ -64,14 +64,33 @@ router.post('/increase', async (req, res) => {
             return res.status(404).json({ message: 'Basket not found' });
         }
 
-        const basketItem = await BasketItem.findOne({ basket_id: basket._id, product_id });
-        if (!basketItem) {
-            return res.status(404).json({ message: 'Basket item not found' });
+        const product = await Product.findById(product_id);
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
         }
 
-        basketItem.count += 1;
-        await basketItem.save();
-        res.status(200).json(basketItem);
+        if (product.count <= 0) {
+            return res.status(400).json({ message: 'Product is out of stock' });
+        }
+
+        let basketItem = await BasketItem.findOne({ basket_id: basket._id, product_id: product._id });
+        if (basketItem) {
+            basketItem.count += 1;
+            product.count -= 1;
+            await basketItem.save();
+            await product.save();
+            res.status(200).json(basketItem);
+        } else {
+            basketItem = new BasketItem({
+                basket_id: basket._id,
+                product_id: product._id,
+                count: 1
+            });
+            product.count -= 1;
+            await basketItem.save();
+            await product.save();
+            res.status(201).json(basketItem);
+        }
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
@@ -91,12 +110,21 @@ router.post('/decrease', async (req, res) => {
             return res.status(404).json({ message: 'Basket item not found' });
         }
 
+        const product = await Product.findById(product_id);
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
         if (basketItem.count > 1) {
             basketItem.count -= 1;
+            product.count += 1;
             await basketItem.save();
+            await product.save();
             res.status(200).json(basketItem);
         } else {
+            product.count += 1;
             await basketItem.remove();
+            await product.save();
             res.status(200).json({ message: 'Basket item removed' });
         }
     } catch (error) {
